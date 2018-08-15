@@ -19,6 +19,9 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 private:
     ATank* GetControlledTank() const;
     
+    //return an out parameter and return bool when hit
+    bool GetSightRayHitLocation(FVector& OutHitLocation) const;
+    
     //start the tank barrel moving so that a it hits the item in the cross hair when fired
     void AimTowardsCrosshair();
     

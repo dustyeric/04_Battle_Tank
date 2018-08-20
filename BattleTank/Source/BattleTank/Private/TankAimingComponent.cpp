@@ -3,6 +3,7 @@
 #include "TankAimingComponent.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
 
 
 // Sets default values for this component's properties
@@ -10,7 +11,7 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
 }
@@ -37,6 +38,12 @@ void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
     Barrel = BarrelToSet;
 }
 
+void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet)
+{
+    Turret = TurretToSet;
+}
+
+
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
     
@@ -54,17 +61,12 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
                                                                         0,
                                                                         0,
                                                                  ESuggestProjVelocityTraceOption::DoNotTrace);//parameter must be here to prevent bug
-    auto Time = GetWorld()->GetTimeSeconds();
     if(bHaveAimSolution)
     {
-        //UE_LOG(LogTemp, Warning, TEXT("%f - Aim solve found") ,Time);
         auto AimDirection = OutTossVelocity.GetSafeNormal();
         auto TankName = GetOwner()->GetName();
-       // UE_LOG(LogTemp, Warning, TEXT("%s aiming at  %s") ,*TankName , *AimDirection.ToString());
         MoveBarrelTowards(AimDirection);
         
-    }else{
-        UE_LOG(LogTemp, Warning, TEXT("%f - No aim solution found"), Time);
     }
    
 }
@@ -76,9 +78,13 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
     auto BarrelRotator = Barrel->GetForwardVector().Rotation();
     auto AimAsRotator = AimDirection.Rotation();
     auto DeltaRotator = AimAsRotator - BarrelRotator;
-
+    
+    auto TurretRotator = Turret->GetForwardVector().Rotation();
+    auto TurretDeltaRotator = AimAsRotator - TurretRotator;
+    
     //move the barrel right amount this frame
-    Barrel->Elevate(DeltaRotator.Pitch); //remove magic number from here
+    Barrel->Elevate(DeltaRotator.Pitch);
+    Turret->Rotate(TurretDeltaRotator.Yaw);
   
 }
 

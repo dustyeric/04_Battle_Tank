@@ -19,7 +19,15 @@ void ATank::BeginPlay()
 	
 }
 
+void ATank::Fire()
+{
+    UE_LOG(LogTemp, Warning, TEXT("Fire Tank pressed"));
+}
 
+void ATank::SetTurretReference(UTankTurret* TurretToSet)
+{
+    TankAimingComponent->SetTurretReference(TurretToSet);
+}
 
 void ATank::SetBarrelReference(UTankBarrel* BarrelToSet)
 {

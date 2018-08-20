@@ -43,7 +43,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
     //find the cross hair screen location
     int32 ViewPortSizeY, ViewPortSizeX;
     GetViewportSize(ViewPortSizeX, ViewPortSizeY);
-    FVector2D ScreenLocation = FVector2D(ViewPortSizeY*CrossHairXLocation, ViewPortSizeY*CrossHairYLocation);
+    FVector2D ScreenLocation = FVector2D(ViewPortSizeX*CrossHairXLocation, ViewPortSizeY*CrossHairYLocation);
         //De-project the screen location to world coordinates
     FVector LookDirection;
     

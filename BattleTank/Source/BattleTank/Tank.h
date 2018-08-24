@@ -23,13 +23,13 @@ public:
     
 private:
     
-    UPROPERTY(EditDefaultsOnly, Category=Setup)
+    UPROPERTY(EditDefaultsOnly, Category="Setup")
     TSubclassOf<AProjectile> ProjectileBlueprint;
     
-    UPROPERTY(EditDefaultsOnly, Category=Firing)
+    UPROPERTY(EditDefaultsOnly, Category="Firing")
     float LaunchSpeed = 4000;
     
-    UPROPERTY(EditDefaultsOnly, Category=Firing)
+    UPROPERTY(EditDefaultsOnly, Category="Firing")
     float ReloadTimeInSeconds = 3;
     
     //local reference to the tank barrel for spawning projectiles
@@ -39,7 +39,7 @@ private:
 
 protected:
     UTankAimingComponent* TankAimingComponent = nullptr;
-    UPROPERTY(BlueprintReadOnly, Category=Movement)
+    UPROPERTY(BlueprintReadOnly, Category="Movement")
     UTankMovementComponent* TankMovementComponent = nullptr;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

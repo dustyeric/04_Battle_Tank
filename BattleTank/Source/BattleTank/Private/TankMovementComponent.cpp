@@ -16,11 +16,11 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
     auto AIForwardIntention = MoveVelocity.GetSafeNormal();
     
     //dot product is a cosine function
-    float ForwardThrow = FVector::DotProduct(TankForward, AIForwardIntention);
+    auto ForwardThrow = FVector::DotProduct(TankForward, AIForwardIntention);
     IntendMoveForward(ForwardThrow);
     
-    FVector CrossProduct = FVector::CrossProduct(TankForward, AIForwardIntention);
-    IntentTurnRight(CrossProduct.Z);
+    auto RightThrow = FVector::CrossProduct(TankForward, AIForwardIntention).Z;
+    IntentTurnRight(RightThrow);
 }
 
 void UTankMovementComponent::IntentTurnRight(float Throw)

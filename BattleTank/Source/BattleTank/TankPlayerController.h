@@ -15,7 +15,10 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
-
+protected:
+    UFUNCTION(BlueprintCallable, Category="Setup")
+    ATank* GetControlledTank() const;
+    
 private:
     
     UPROPERTY(EditDefaultsOnly)
@@ -28,9 +31,7 @@ private:
     bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const;
     
     bool GetLookVectorHitLocation(FVector LookDirection, FVector& OutHitLocation) const;
-    
-    
-    ATank* GetControlledTank() const;
+   
     //return an out parameter and return bool when hit
     bool GetSightRayHitLocation(FVector& OutHitLocation) const;
     

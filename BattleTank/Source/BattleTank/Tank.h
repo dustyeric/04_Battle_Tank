@@ -32,26 +32,22 @@ private:
     UPROPERTY(EditDefaultsOnly, Category="Firing")
     float ReloadTimeInSeconds = 3;
     
-    //local reference to the tank barrel for spawning projectiles
-    UTankBarrel* TankBarrel;
-    
     double LastFireTime = 0;
 
 protected:
+    UPROPERTY(BlueprintReadOnly, Category="Movement")
     UTankAimingComponent* TankAimingComponent = nullptr;
     UPROPERTY(BlueprintReadOnly, Category="Movement")
     UTankMovementComponent* TankMovementComponent = nullptr;
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+    virtual void BeginPlay() override;
 
 public:
+    
+    UFUNCTION(BlueprintCallable, Category="Setup")
+    void Initialise(UTankAimingComponent* TankAimingComponentToSet, UTankMovementComponent* TankMovementComponentToSet);
+    
     void AimAt(FVector HitLocation);
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-    UFUNCTION(BlueprintCallable, Category = Setup)
-    void SetBarrelReference(UTankBarrel* BarrelToSet);
-    UFUNCTION(BlueprintCallable, Category = Setup)
-    void SetTurretReference(UTankTurret* TurretToSet);
+    
     UFUNCTION(BlueprintCallable, Category = Firing)
     void Fire();
 	

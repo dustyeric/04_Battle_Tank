@@ -22,7 +22,7 @@ void ATankAIController::Tick(float DeltaTime)
         MoveToActor(PlayerTank, AcceptanceRadius);
         
         ControlledTank->AimAt(PlayerTank->GetActorLocation());
-       // ControlledTank->Fire(); //Limit firing rate
+        ControlledTank->Fire(); //Limit firing rate
     }
     
     

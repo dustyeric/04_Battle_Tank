@@ -11,26 +11,33 @@ ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-    TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Tank Aiming Component"));
+    UE_LOG(LogTemp, Warning, TEXT("C++ tank constructor"));
 }
 
-// Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
-	Super::BeginPlay();
-	
+    Super::BeginPlay();
+    UE_LOG(LogTemp, Warning, TEXT("C++ begin play from c++"));
 }
+
+
+void ATank::Initialise(UTankAimingComponent* TankAimingComponentToSet, UTankMovementComponent* TankMovementComponentToSet)
+{
+    TankAimingComponent = TankAimingComponentToSet;
+    TankMovementComponent = TankMovementComponentToSet;
+}
+
 
 void ATank::Fire()
 {
     bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
     
-    if(TankBarrel && isReloaded)
+    if(TankAimingComponent && isReloaded)
     {
         //spawn a projectile at the location of the barrel socket
         UWorld* World = GetWorld();
         auto Projectile = World->SpawnActor<AProjectile>(ProjectileBlueprint,
-                                                         TankBarrel->GetSocketLocation(FName("Projectile")), TankBarrel->GetSocketRotation(FName("Projectile")));
+                                                         TankAimingComponent->GetBarrelSocketLocation(), TankAimingComponent->GetBarrelSocketRotation());
         if(Projectile){
             Projectile->LaunchProjectile(LaunchSpeed);
             LastFireTime = FPlatformTime::Seconds();
@@ -40,27 +47,13 @@ void ATank::Fire()
    
 }
 
-void ATank::SetTurretReference(UTankTurret* TurretToSet)
-{
-    TankAimingComponent->SetTurretReference(TurretToSet);
-}
-
-void ATank::SetBarrelReference(UTankBarrel* BarrelToSet)
-{
-    TankAimingComponent->SetBarrelReference(BarrelToSet);
-    TankBarrel = BarrelToSet;
-}
-
 
 void ATank::AimAt(FVector HitLocation)
 {
+    if(!TankAimingComponent){return;}
     TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
 
 
-// Called to bind functionality to input
-void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
+
 
